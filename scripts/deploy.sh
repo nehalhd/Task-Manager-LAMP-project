@@ -7,7 +7,8 @@ DB_PASSWORD="StrongPassword123!"
 sudo git clone https://github.com/nehalhd/Task-Manager-LAMP-project.git $APP_DIR
 
 # Set permissions
-sudo chown -R apache:apache $APP_DIR
+sudo chown -R www-data:www-data $APP_DIR
+sudo chmod -R 755 "$APP_DIR"
 
 # Create the database
 sudo mysql -u$DB_USER -p$DB_PASSWORD -e "

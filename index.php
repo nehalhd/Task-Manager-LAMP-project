@@ -1,17 +1,16 @@
 <?php
 
+// Check connection
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Your original PHP code starts here
 require_once __DIR__ . '/vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASSWORD'];
 
 // Database credentials
 $servername = "localhost";
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASSWORD'];
+$username = "root";
+$password = "StrongPassword123!";
 $dbname = "taskdb";
 
 // Create connection
@@ -21,7 +20,6 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 // Handle form submission to add a task
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $task = $conn->real_escape_string($_POST['task']);

@@ -3,6 +3,11 @@
 # Exit if any command fails
 set -e
 
+# Constants for MySQL credentials
+MYSQL_ROOT_PASSWORD="StrongPassword123!"
+MYSQL_USER="root"
+MYSQL_PASSWORD="StrongPassword123!
+MYSQL_DATABASE="taskdb"
 # Define repository URL and name
 REPO_URL="https://github.com/nehalhd/Task-Manager-LAMP-project.git"
 REPO_NAME=$(basename "$REPO_URL" .git)
@@ -22,19 +27,35 @@ else
   git pull origin main
 fi
 
-# Install Composer if not available
-if ! [ -x "$(command -v composer)" ]; then
-    echo "Composer not found. Installing Composer..."
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    php composer-setup.php
-    sudo mv composer.phar /usr/local/bin/composer
+
+# Secure MySQL installation if not done already
+echo "Securing MySQL installation..."
+sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '$MYSQL_ROOT_PASSWORD';" || true
+sudo mysql -u root -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
+
+# Check if the database exists and create it if necessary
+echo "Checking if the database $MYSQL_DATABASE exists..."
+DB_EXISTS=$(mysql -u root -p$MYSQL_ROOT_PASSWORD -e "SHOW DATABASES LIKE '$MYSQL_DATABASE';" 2>/dev/null | grep "$MYSQL_DATABASE" || true)
+if [ -z "$DB_EXISTS" ]; then
+    echo "Database not found, creating it..."
+    sudo mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $MYSQL_DATABASE;"
+    sudo mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';"
+    sudo mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'localhost';"
+    sudo mysql -u root -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 else
-    echo "Composer is already installed."
+    echo "Database $MYSQL_DATABASE already exists."
 fi
 
 # Install Composer dependencies
 echo "Installing Composer dependencies..."
-composer install --no-interaction
+if ! [ -x "$(command -v composer)" ]; then
+    echo "Composer not found, installing Composer..."
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php composer-setup.php
+    sudo mv composer.phar /usr/local/bin/composer
+fi
+composer install
+
 
 # Ensure Apache and MySQL are running
 echo "Ensuring Apache and MySQL are running..."
@@ -42,14 +63,6 @@ sudo systemctl start apache2
 sudo systemctl enable apache2
 sudo systemctl start mysql
 sudo systemctl enable mysql
-
-# Check if MySQL database exists; if not, create it
-DB_NAME="taskdb"
-echo "Checking if the database $DB_NAME exists..."
-if ! mysql -u root -e "USE $DB_NAME;" 2>/dev/null; then
-  echo "Database not found, creating it..."
-  mysql -u root -p StrongPassword123! -e "CREATE DATABASE $DB_NAME;"
-fi
 
 # Set up the database schema (ensure the db_schema.sql exists in the repo)
 if [ -f "db_schema.sql" ]; then

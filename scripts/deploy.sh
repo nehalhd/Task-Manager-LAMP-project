@@ -5,8 +5,8 @@ set -e
 
 # Constants for MySQL credentials
 MYSQL_ROOT_PASSWORD="StrongPassword123!"
-MYSQL_USER="root"
-MYSQL_PASSWORD="StrongPassword123!
+MYSQL_USER="taskm"
+MYSQL_PASSWORD="StrongPassword123!"
 MYSQL_DATABASE="taskdb"
 # Define repository URL and name
 REPO_URL="https://github.com/nehalhd/Task-Manager-LAMP-project.git"

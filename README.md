@@ -147,18 +147,9 @@ Task-Manager-LAMP-project/
 
 ## Troubleshooting:
 
-```markdown
-
-|             Issue           | 	Solution                                                                                                   | 
-|-----------------------------|--------------------------------------------------------------------------------------------------------------|
-| Application not loading     | Ensure Apache is running: bash sudo systemctl start apache2 (Ubuntu) or sudo systemctl start httpd (CentOS). | 
-| Permission issues           | Run chmod +x /scripts/setup.sh to make the script executable.                                                |
-| Permission issues           | Run sudo chown -R apache:apache /path/to/project       # CentOS                                              |
-
-```
-
-| Left Align   | Center Align | Right Align  |
-|:-------------|:------------:|-------------:|
-| Row 1 Cell 1 | Row 1 Cell 2 | Row 1 Cell 3 |
-| Row 2 Cell 1 | Row 2 Cell 2 | Row 2 Cell 3 |
+| Issue    | Solution | 
+|:-------------|:------------:|
+| Application not loading | Ensure Apache is running: bash sudo systemctl start apache2 (Ubuntu) or sudo systemctl start httpd (CentOS). |
+| Permission issues | Run chmod +x /scripts/setup.sh to make the script executable.|
+| Permission issues | Run sudo chown -R apache:apache /path/to/project       # CentOS |
 

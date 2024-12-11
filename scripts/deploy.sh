@@ -22,6 +22,16 @@ else
   git pull origin main
 fi
 
+# Install Composer if not available
+if ! [ -x "$(command -v composer)" ]; then
+    echo "Composer not found. Installing Composer..."
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php composer-setup.php
+    sudo mv composer.phar /usr/local/bin/composer
+else
+    echo "Composer is already installed."
+fi
+
 # Install Composer dependencies
 echo "Installing Composer dependencies..."
 composer install --no-interaction
@@ -38,7 +48,7 @@ DB_NAME="taskdb"
 echo "Checking if the database $DB_NAME exists..."
 if ! mysql -u root -e "USE $DB_NAME;" 2>/dev/null; then
   echo "Database not found, creating it..."
-  mysql -u root -e "CREATE DATABASE $DB_NAME;"
+  mysql -u root -p StrongPassword123! -e "CREATE DATABASE $DB_NAME;"
 fi
 
 # Set up the database schema (ensure the db_schema.sql exists in the repo)

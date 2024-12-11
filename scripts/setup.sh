@@ -35,6 +35,10 @@ if [ ! -d ".git" ]; then
   exit 1
 fi
 
+sudo export USERNAME = "root";
+sudo export PASSWORD = "StrongPassword123!";
+sudo printenv
+
 # Set up the database (replace with your actual database schema)
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS taskdb;"
 mysql -u root -p taskdb < db_schema.sql

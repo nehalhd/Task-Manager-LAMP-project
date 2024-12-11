@@ -76,7 +76,7 @@ Before you begin, ensure:
    chmod +x /scripts/deploy.sh
    ./scripts/deploy.sh
    ```
-    ###This script performs the following:
+    This script performs the following:
       - Installs LAMP stack components (Apache, MySQL, PHP).
       - Configures MySQL database and creates the required schema.
       - Deploys the application files to the Apache web root (/var/www/html)
@@ -147,10 +147,12 @@ Task-Manager-LAMP-project/
 
 ## Troubleshooting:
 
-```sql
+```markdown
 
 |             Issue           | 	Solution                                                                                                   | 
 |-----------------------------|--------------------------------------------------------------------------------------------------------------|
 | Application not loading     | Ensure Apache is running: bash sudo systemctl start apache2 (Ubuntu) or sudo systemctl start httpd (CentOS). | 
 | Permission issues           | Run chmod +x /scripts/setup.sh to make the script executable.                                                |
 | Permission issues           | Run sudo chown -R apache:apache /path/to/project       # CentOS                                              |
+
+```
